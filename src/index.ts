@@ -18,6 +18,10 @@ import type { GitHubTool, ToolOutput } from './types/tool.js';
 import { manageReposTool } from './tools/repos.js';
 import { manageIssuesTool } from './tools/issues.js';
 import { managePullsTool } from './tools/pulls.js';
+import { manageBranchesTool } from './tools/branches.js';
+import { manageReleasesTool } from './tools/releases.js';
+import { manageActionsTool } from './tools/actions.js';
+import { gitHubSearchTool } from './tools/search.js';
 
 // Initialize commander
 program
@@ -248,14 +252,12 @@ const allTools: GitHubTool[] = [
   // Phase 2 tools
   manageIssuesTool,
   managePullsTool,
+  manageBranchesTool,
+  manageReleasesTool,
   
-  // TODO: Continue Phase 2 tools
-  // manageBranchesTool,
-  // manageReleasesTool,
-  
-  // TODO: Phase 3 tools
-  // manageActionsTool,
-  // searchTool,
+  // Phase 3 tools
+  manageActionsTool,
+  gitHubSearchTool,
   
   // TODO: Phase 4 specialized tools
   // analyzeRepoTool,

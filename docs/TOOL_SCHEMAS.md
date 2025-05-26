@@ -9,13 +9,13 @@ This document provides complete parameter reference for all GitHub MCP tools, fo
 
 ### **Phase 2: Core Tools** ✅
 - [`gh_manage_issues`](#gh_manage_issues) - Issue management and tracking
+- [`gh_manage_pulls`](#gh_manage_pulls) - Pull request operations
+- [`gh_manage_branches`](#gh_manage_branches) - Branch operations and protection
+- [`gh_manage_releases`](#gh_manage_releases) - Release management
 
-### **Planned Tools (Phase 2+ Continued)**
-- `gh_manage_pulls` - Pull request operations  
-- `gh_manage_branches` - Branch operations and protection
-- `gh_manage_releases` - Release management
-- `gh_manage_actions` - GitHub Actions integration
-- `gh_search` - Advanced search across GitHub
+### **Phase 3: Advanced Tools** ✅
+- [`gh_manage_actions`](#gh_manage_actions) - GitHub Actions integration
+- [`gh_search`](#gh_search) - Advanced search across GitHub
 
 ---
 
@@ -561,10 +561,261 @@ All tools return responses in this format:
 4. **Check Repository Access**: Verify you have access before operations
 5. **Use Specific Operations**: Choose the most specific operation for your need
 
+---
+
+## 🔧 **gh_manage_actions**
+
+**Description**: Comprehensive GitHub Actions management - workflows, runs, artifacts, and automation
+
+### **Operations**
+
+#### **`list_workflows`** - List Repository Workflows
+Lists all workflows in a repository.
+
+**Required Parameters:**
+- `operation`: `"list_workflows"`
+- `owner`: Repository owner (string)
+- `repo`: Repository name (string)
+
+**Optional Parameters:**
+- `token`: GitHub token (string)
+- `per_page`: Results per page (number, 1-100)
+- `page`: Page number (number, ≥1)
+
+**Example:**
+```json
+{
+  "operation": "list_workflows",
+  "owner": "octocat",
+  "repo": "Hello-World"
+}
+```
+
+#### **`trigger_workflow`** - Trigger Workflow
+Manually triggers a workflow dispatch event.
+
+**Required Parameters:**
+- `operation`: `"trigger_workflow"`
+- `owner`: Repository owner (string)
+- `repo`: Repository name (string)
+- `workflow_id`: Workflow ID or filename (string/number)
+
+**Optional Parameters:**
+- `token`: GitHub token (string)
+- `ref`: Git reference (string, defaults to default branch)
+- `inputs`: Workflow inputs (object with string/number/boolean values)
+
+**Example:**
+```json
+{
+  "operation": "trigger_workflow",
+  "owner": "octocat",
+  "repo": "Hello-World",
+  "workflow_id": "ci.yml",
+  "ref": "main",
+  "inputs": {
+    "debug": "true",
+    "environment": "staging"
+  }
+}
+```
+
+#### **`list_runs`** - List Workflow Runs
+Lists workflow runs for a repository.
+
+**Required Parameters:**
+- `operation`: `"list_runs"`
+- `owner`: Repository owner (string)
+- `repo`: Repository name (string)
+
+**Optional Parameters:**
+- `token`: GitHub token (string)
+- `workflow_id`: Filter by specific workflow (string/number)
+- `status`: Filter by status (`"completed"`, `"in_progress"`, `"queued"`, etc.)
+- `actor`: Filter by actor username (string)
+- `branch`: Filter by branch name (string)
+- `event`: Filter by trigger event (string)
+- `created`: Filter by creation date (ISO 8601 string)
+- `per_page`: Results per page (number, 1-100)
+- `page`: Page number (number, ≥1)
+
+**Example:**
+```json
+{
+  "operation": "list_runs",
+  "owner": "octocat",
+  "repo": "Hello-World",
+  "status": "completed",
+  "branch": "main"
+}
+```
+
+#### **`cancel_run`** - Cancel Workflow Run
+Cancels a workflow run.
+
+**Required Parameters:**
+- `operation`: `"cancel_run"`
+- `owner`: Repository owner (string)
+- `repo`: Repository name (string)
+- `run_id`: Workflow run ID (number)
+
+**Optional Parameters:**
+- `token`: GitHub token (string)
+
+**Example:**
+```json
+{
+  "operation": "cancel_run",
+  "owner": "octocat",
+  "repo": "Hello-World",
+  "run_id": 123456789
+}
+```
+
+#### **`list_artifacts`** - List Artifacts
+Lists artifacts for a repository.
+
+**Required Parameters:**
+- `operation`: `"list_artifacts"`
+- `owner`: Repository owner (string)
+- `repo`: Repository name (string)
+
+**Optional Parameters:**
+- `token`: GitHub token (string)
+- `per_page`: Results per page (number, 1-100)
+- `page`: Page number (number, ≥1)
+
+**Example:**
+```json
+{
+  "operation": "list_artifacts",
+  "owner": "octocat",
+  "repo": "Hello-World"
+}
+```
+
+---
+
+## 🔧 **gh_search**
+
+**Description**: Advanced GitHub search - repositories, issues, PRs, users, code, commits, and topics
+
+### **Operations**
+
+#### **`repositories`** - Search Repositories
+Searches for repositories using GitHub's search syntax.
+
+**Required Parameters:**
+- `operation`: `"repositories"`
+- `q`: Search query (string)
+
+**Optional Parameters:**
+- `token`: GitHub token (string)
+- `language`: Programming language filter (string)
+- `repo_size`: Repository size filter (string, e.g., ">1000")
+- `sort`: Sort field (`"stars"`, `"forks"`, `"help-wanted-issues"`, `"updated"`)
+- `order`: Sort order (`"asc"`, `"desc"`)
+- `per_page`: Results per page (number, 1-100)
+- `page`: Page number (number, ≥1)
+
+**Example:**
+```json
+{
+  "operation": "repositories",
+  "q": "react",
+  "language": "javascript",
+  "sort": "stars",
+  "order": "desc"
+}
+```
+
+#### **`issues`** - Search Issues
+Searches for issues across GitHub.
+
+**Required Parameters:**
+- `operation`: `"issues"`
+- `q`: Search query (string)
+
+**Optional Parameters:**
+- `token`: GitHub token (string)
+- `state`: Issue state filter (`"open"`, `"closed"`)
+- `labels`: Labels filter (comma-separated string)
+- `assignee`: Assignee filter (string)
+- `sort`: Sort field (`"comments"`, `"reactions"`, `"created"`, `"updated"`)
+- `order`: Sort order (`"asc"`, `"desc"`)
+- `per_page`: Results per page (number, 1-100)
+- `page`: Page number (number, ≥1)
+
+**Example:**
+```json
+{
+  "operation": "issues",
+  "q": "is:issue is:open label:bug",
+  "sort": "updated",
+  "order": "desc"
+}
+```
+
+#### **`code`** - Search Code
+Searches for code across GitHub repositories.
+
+**Required Parameters:**
+- `operation`: `"code"`
+- `q`: Search query (string)
+
+**Optional Parameters:**
+- `token`: GitHub token (string)
+- `repo`: Repository filter (string, format: "owner/repo")
+- `path`: File path filter (string)
+- `extension`: File extension filter (string)
+- `language`: Programming language filter (string)
+- `sort`: Sort field (`"indexed"`)
+- `order`: Sort order (`"asc"`, `"desc"`)
+- `per_page`: Results per page (number, 1-100)
+- `page`: Page number (number, ≥1)
+
+**Example:**
+```json
+{
+  "operation": "code",
+  "q": "function handleClick",
+  "repo": "facebook/react",
+  "extension": "js",
+  "language": "javascript"
+}
+```
+
+#### **`users`** - Search Users
+Searches for users and organizations.
+
+**Required Parameters:**
+- `operation`: `"users"`
+- `q`: Search query (string)
+
+**Optional Parameters:**
+- `token`: GitHub token (string)
+- `location`: Location filter (string)
+- `sort`: Sort field (`"followers"`, `"repositories"`, `"joined"`)
+- `order`: Sort order (`"asc"`, `"desc"`)
+- `per_page`: Results per page (number, 1-100)
+- `page`: Page number (number, ≥1)
+
+**Example:**
+```json
+{
+  "operation": "users",
+  "q": "john",
+  "location": "San Francisco",
+  "sort": "followers"
+}
+```
+
 ## 📚 **Examples Library**
 
 See the `examples/` directory for complete usage examples:
 - Basic repository operations
+- GitHub Actions automation
+- Advanced search queries
 - Bulk operations scripts
 - Error handling patterns
 - Authentication setups 

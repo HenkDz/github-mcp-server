@@ -10,13 +10,13 @@ A Model Context Protocol server for GitHub API operations, providing comprehensi
 - ✅ **Error Handling**: Comprehensive GitHub API error mapping
 - ✅ **Token Management**: Multiple authentication methods
 
-### **Phase 2: Core Tools** 🔄 **IN PROGRESS** 
+### **Phase 2: Core Tools** ✅ **COMPLETE** 
 - ✅ **Issue Management**: Create, update, close, assign, label, comment, search, and list issues
 - ✅ **Pull Request Management**: Create, update, merge, review, approve, request changes, list PRs
+- ✅ **Branch Management**: Create, delete, get, list, and manage branch protection
+- ✅ **Release Management**: Create, update, delete, publish, and manage releases
 
 ### **Planned Features**
-- 🔄 **Branch Management**: Create, delete, protect branches
-- 🔄 **Release Management**: Create and manage releases
 - 🔄 **Actions Integration**: Trigger workflows, get run status
 - 🔄 **Advanced Search**: Search across repos, issues, PRs, code
 - 🔄 **Repository Analytics**: Health checks, insights, metrics
@@ -125,6 +125,28 @@ Comprehensive pull request management with the following operations:
 - **`list`**: List repository pull requests
 - **`close`**: Close a pull request
 
+### **gh_manage_branches** (Phase 2) ✅
+Comprehensive branch management with the following operations:
+
+- **`create`**: Create a new branch
+- **`get`**: Get branch information
+- **`delete`**: Delete a branch
+- **`list`**: List repository branches
+- **`protect`**: Set branch protection rules
+- **`get_protection`**: Get branch protection settings
+- **`update_protection`**: Update protection rules
+
+### **gh_manage_releases** (Phase 2) ✅
+Comprehensive release management with the following operations:
+
+- **`create`**: Create a new release
+- **`get`**: Get release information
+- **`update`**: Update release properties
+- **`delete`**: Delete a release
+- **`publish`**: Publish a draft release
+- **`get_latest`**: Get latest release
+- **`list`**: List repository releases
+
 #### **Example Usage**
 
 ```json
@@ -162,11 +184,11 @@ Following the proven patterns from postgres-mcp:
 - [x] Authentication handling
 - [x] Error handling and validation
 
-### **Phase 2: Core Tools** (In Progress)
-- [ ] Issue management tool
-- [ ] Pull request management tool
-- [ ] Branch management tool
-- [ ] Release management tool
+### **Phase 2: Core Tools** ✅ **COMPLETE**
+- [x] Issue management tool
+- [x] Pull request management tool
+- [x] Branch management tool
+- [x] Release management tool
 
 ### **Phase 3: Advanced Features**
 - [ ] GitHub Actions integration
