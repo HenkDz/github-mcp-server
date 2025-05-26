@@ -83,7 +83,7 @@ async function executeGitHubSearch(
     
     const searchParams = {
       q: input.q,
-      sort: input.sort as any,
+      sort: input.sort,
       order: input.order,
       per_page: input.per_page,
       page: input.page,
@@ -114,7 +114,7 @@ async function executeGitHubSearch(
         const result = await client.rest.search.issuesAndPullRequests({
           ...searchParams,
           q: `${query} type:issue`,
-          sort: input.sort as any,
+          sort: input.sort as 'comments' | 'reactions' | 'reactions-+1' | 'reactions--1' | 'reactions-smile' | 'reactions-thinking_face' | 'reactions-heart' | 'reactions-tada' | 'interactions' | 'created' | 'updated' | undefined,
         });
         return { operation: input.operation, result: result.data };
       }
@@ -129,7 +129,7 @@ async function executeGitHubSearch(
         const result = await client.rest.search.issuesAndPullRequests({
           ...searchParams,
           q: `${query} type:pr`,
-          sort: input.sort as any,
+          sort: input.sort as 'comments' | 'reactions' | 'reactions-+1' | 'reactions--1' | 'reactions-smile' | 'reactions-thinking_face' | 'reactions-heart' | 'reactions-tada' | 'interactions' | 'created' | 'updated' | undefined,
         });
         return { operation: input.operation, result: result.data };
       }
@@ -223,7 +223,7 @@ export const gitHubSearchTool: GitHubTool = {
       
       // Format the search results with summary
       const summary = `GitHub ${result.operation} search completed`;
-      const data = result.result as any;
+      const data = result.result as { total_count?: number; items?: unknown[] };
       const totalCount = data.total_count || 0;
       const items = data.items || [];
       
